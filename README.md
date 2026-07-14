@@ -4,4 +4,8 @@
 * start ambient
 * start timer
 
-*reconstructing the code*
+# pending
+*reconstructing code into mvvm pattern*
+*background service*
+
+
