@@ -109,14 +109,9 @@ public class ClockTimerHelper {
         for(NumberPicker np : numberPicker){
             np.setMinValue(MIN);
             np.setMaxValue(Objects.equals(np,npHour)? MAX_HOUR: MAX_MINUTE_SECOND);
-            np.setValue(0);
+            np.setFormatter(value -> String.format(Locale.getDefault(),"%02d", value));
+            np.setValue(MIN);
             np.setWrapSelectorWheel(true);
-            np.setFormatter(new NumberPicker.Formatter() {
-                @Override
-                public String format(int value) {
-                    return String.format(new Locale(Locale.getDefault().getLanguage(), Locale.getDefault().getCountry()),"%02d", value);
-                }
-            });
             np.setOnValueChangedListener((picker, oldVal, newVal) -> {
                 viewModel.setTimer(npHour.getValue(), npMinute.getValue(), npSecond.getValue());
             });

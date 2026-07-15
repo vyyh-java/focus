@@ -13,7 +13,6 @@ import com.example.in.R;
 
 public class MainActivity extends AppCompatActivity {
 
-    private ClockTimerManager timerManager;
     private NoisePlayerManager noiseManager;
     private TaskHelper taskHelper;
     private ClockTimerHelper timerHelper;
@@ -25,7 +24,6 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         rootView = findViewById(android.R.id.content);
         noiseManager = new NoisePlayerManager(rootView, this);
-        //timerManager = new ClockTimerManager(rootView, this);
         taskHelper = new TaskHelper(rootView, this, this);
         timerHelper = new ClockTimerHelper(rootView, this);
 
@@ -34,7 +32,6 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        timerManager.release();
         noiseManager.release();
     }
     @Override
