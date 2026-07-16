@@ -2,6 +2,7 @@ package com.example.in.ui.main;
 
 
 import android.animation.ObjectAnimator;
+import android.graphics.Color;
 import android.view.View;
 import android.view.animation.DecelerateInterpolator;
 import android.widget.ImageButton;
@@ -11,6 +12,7 @@ import android.widget.TextClock;
 import android.widget.TextView;
 import android.widget.Toast;
 import androidx.lifecycle.LifecycleOwner;
+import androidx.lifecycle.LiveData;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelStoreOwner;
 import androidx.recyclerview.widget.RecyclerView;
@@ -37,7 +39,7 @@ public class ClockTimerHelper {
 
     private ImageButton btnStartPause;
 
-    private TextView tvStart;
+    private TextView tvStart, tvEnd;
 
     private static final int  MAX_HOUR = 3;
     private static final int  MAX_MINUTE_SECOND = 59;
@@ -54,12 +56,14 @@ public class ClockTimerHelper {
         tcTimer = (TextClock) rootView.findViewById(R.id.TCTimer);
         btnStartPause = (ImageButton) rootView.findViewById(R.id.IBtoggler);
         tvStart = (TextView) rootView.findViewById(R.id.TVStart);
+        tvEnd = (TextView) rootView.findViewById(R.id.TVEnd);
 
         numberPicker.addAll(List.of(npHour, npMinute, npSecond));
 
         this.llTimer = (LinearLayout) rootView.findViewById(R.id.LLTimer);
         this.rvTask = (RecyclerView) rootView.findViewById(R.id.RVTask);
 
+        setBtnUi(btnStartPause.isActivated());
         setNumberPicker();
         setInterface(false, btnStartPause.isActivated());
 
@@ -95,6 +99,9 @@ public class ClockTimerHelper {
         tvTimer.setOnClickListener(v -> {
             setInterface(false, btnStartPause.isActivated());
         });
+    }
+    public LiveData<Boolean> getIsTimerStart() {
+        return viewModel.getIsTimerStart();
     }
 
     private void setNumberPicker(){
@@ -141,10 +148,8 @@ public class ClockTimerHelper {
         animator.setDuration(400);
         animator.setInterpolator(new DecelerateInterpolator());
         animator.start();
-        if(isActivated)
-            tvStart.setShadowLayer(10, 0, 0, 0xFFFFFFFF);
-        else
-            tvStart.setShadowLayer(0, 0, 0, 0xFF000000);
+        tvStart.setActivated(isActivated);
+        tvEnd.setActivated(!isActivated);
     }
 
 }

@@ -8,6 +8,7 @@ import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import androidx.lifecycle.LifecycleOwner;
+import androidx.lifecycle.LiveData;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelStoreOwner;
 import com.example.in.R;
@@ -51,6 +52,14 @@ public class AmbientHelper {
             }
             previousId = resId;
         });
+    }
+    public void stopAmbient(){
+        Integer currentId = viewModel.getCurrentPlayingResId().getValue();
+        if (currentId != null && currentId != -1) {
+            viewModel.stop();
+        } else {
+            //if alarm
+        }
     }
 
     private void animateGlow(int id) {

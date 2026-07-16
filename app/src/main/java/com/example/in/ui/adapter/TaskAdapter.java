@@ -182,7 +182,7 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder
         //line
         holder.etTask.getPaint().setStrikeThruText(isChecked);
         //color
-        holder.etTask.setTextColor(isChecked ? Color.GRAY : Color.BLACK);
+        holder.etTask.setActivated(!isChecked);
         //
         holder.cbTask.setChecked(isChecked);
     }

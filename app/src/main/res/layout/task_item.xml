@@ -30,7 +30,7 @@
         android:inputType="text"
         android:fontFamily="serif-monospace"
         android:maxLines="1"
-        android:textColor="@color/black"
+        android:textColor="@drawable/selector_checked_text"
         android:textSize="14sp"
         android:imeOptions="actionDone|flagNoExtractUi"
         android:focusableInTouchMode="true"

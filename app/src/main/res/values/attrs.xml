@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <attr name="colorScreen" format="color" />
+    <attr name="colorScreenCorner" format="color" />
+    <attr name="colorTextPrimaryInactive" format="color" />
+</resources>

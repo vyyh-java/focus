@@ -6,7 +6,6 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/grey"
     android:padding="24dp"
     tools:context=".ui.main.MainActivity"
     android:focusable="true"
@@ -18,11 +17,10 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginEnd="24dp"
-        android:background="@drawable/retro"
+        android:background="@drawable/screen_background"
         android:padding="16dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@id/CLControl"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
@@ -51,8 +49,8 @@
                 android:layout_height="match_parent"
                 android:fontFamily="serif-monospace"
                 android:gravity="center"
-                android:text=":"
-                android:textColor="@color/black"
+                android:text="@string/colon"
+                android:textColor="?android:textColorPrimary"
                 android:textSize="48sp" />
 
             <NumberPicker
@@ -67,8 +65,8 @@
                 android:layout_height="match_parent"
                 android:fontFamily="serif-monospace"
                 android:gravity="center"
-                android:text=":"
-                android:textColor="@color/black"
+                android:text="@string/colon"
+                android:textColor="?android:textColorPrimary"
                 android:textSize="48sp" />
 
             <NumberPicker
@@ -98,8 +96,10 @@
             android:fontFamily="serif-monospace"
             android:text="@string/timerZero"
             android:textSize="24sp"
+            android:textColor="?android:textColorPrimary"
             android:gravity="center_vertical"
             android:clickable="true"
+            android:background="@null"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
 
@@ -113,6 +113,7 @@
             android:textSize="24sp"
             android:clickable="true"
             android:gravity="center_vertical"
+            android:textColor="?android:textColorPrimary"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"/>
 
@@ -135,7 +136,7 @@
             android:fontFamily="serif-monospace"
             android:gravity="center"
             android:text="@string/plus"
-            android:textColor="@color/black"
+            android:textColor="?android:textColorPrimary"
             android:textSize="24sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -244,7 +245,7 @@
         android:layout_height="wrap_content"
         android:fontFamily="serif-monospace"
         android:text="@string/start"
-        android:textColor="@color/white"
+        android:textColor="@drawable/selector_activated_text"
         android:textSize="14sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
@@ -255,8 +256,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:fontFamily="serif-monospace"
-        android:text="@string/end"
-        android:textColor="@color/white"
+        android:text="@string/stop"
+        android:textColor="@drawable/selector_activated_text"
         android:textSize="14sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="@id/IBtoggler"

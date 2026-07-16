@@ -16,7 +16,7 @@ import androidx.media3.session.SessionToken;
 
 import com.example.in.data.entity.Ambient;
 import com.example.in.repository.AmbientRepository;
-import com.example.in.service.BackgroundAmbientService;
+import com.example.in.service.PlaybackService;
 import com.google.common.util.concurrent.ListenableFuture;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
@@ -70,7 +70,7 @@ public class AmbientViewModel extends AndroidViewModel {
     }
 
     private void createController(Context context){
-        SessionToken sessionToken = new SessionToken(context, new ComponentName(context, BackgroundAmbientService.class));
+        SessionToken sessionToken = new SessionToken(context, new ComponentName(context, PlaybackService.class));
         controllerFuture = new MediaController.Builder(context, sessionToken).buildAsync();
         controllerFuture.addListener(() -> {
             try {
