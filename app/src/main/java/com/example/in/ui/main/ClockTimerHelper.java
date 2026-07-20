@@ -143,6 +143,7 @@ public class ClockTimerHelper {
                 }
             }else{
                 //send to service using controller
+                timerViewModel.onCanceled();
                 ambientViewModel.stopTimer();
             }
         });

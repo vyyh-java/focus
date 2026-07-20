@@ -37,6 +37,11 @@ public class ClockTimerViewModel extends ViewModel {
         timerValue.setValue(0);
         isTimerStart.setValue(false);
     }
+
+    public void onCanceled(){
+        isTimerStart.setValue(false);
+    }
+
     public void setTimer(int hour, int minute, int second){
         timerValue.setValue((hour * 3600000) + (minute * 60000) + (second * 1000));
         timerText.setValue(format(hour, minute, second));
