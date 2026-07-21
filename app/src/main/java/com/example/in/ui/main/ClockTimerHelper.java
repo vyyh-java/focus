@@ -4,6 +4,10 @@ package com.example.in.ui.main;
 import android.animation.ObjectAnimator;
 import android.content.Context;
 import android.graphics.Color;
+import android.graphics.PorterDuff;
+import android.graphics.drawable.Drawable;
+import android.graphics.drawable.LayerDrawable;
+import android.graphics.drawable.RotateDrawable;
 import android.graphics.drawable.TransitionDrawable;
 import android.view.View;
 import android.view.animation.DecelerateInterpolator;
@@ -197,10 +201,18 @@ public class ClockTimerHelper {
     }
     public void setBtnUi(boolean isActivated){
         btnStartPause.setActivated(isActivated);
+        LayerDrawable ld = (LayerDrawable) btnStartPause.getDrawable();
+        RotateDrawable rot = (RotateDrawable) ld.findDrawableByLayerId(R.id.LineTimer);
+        if (rot != null) {
+            int targetLevel = isActivated ? 8750 : 1250;
+            rot.setAlpha(isActivated ? 255 : 180);
+            rot.setLevel(targetLevel);
+        }
+        /*
         ObjectAnimator animator = ObjectAnimator.ofFloat(btnStartPause, "rotation", isActivated? 0f: -90f, isActivated? -90f: 0f);
         animator.setDuration(400);
         animator.setInterpolator(new DecelerateInterpolator());
-        animator.start();
+        animator.start();*/
         tvStart.setActivated(isActivated);
         tvEnd.setActivated(!isActivated);
     }

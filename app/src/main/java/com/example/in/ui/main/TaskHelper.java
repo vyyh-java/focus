@@ -7,6 +7,8 @@ import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
+
 import androidx.annotation.NonNull;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsAnimationCompat;
@@ -86,8 +88,12 @@ public class TaskHelper implements TaskAdapter.OnTaskActionListener {
 
         //add
         btnAdd.setOnClickListener(v -> {
-            this.isAdding = true;
-            viewModel.addTask("");
+            if(rvTask.getVisibility() != View.VISIBLE){
+                Toast.makeText(v.getContext(), "Please return to To-do list", Toast.LENGTH_SHORT).show();
+            }else{
+                this.isAdding = true;
+                viewModel.addTask("");
+            }
         });
         ViewCompat.setWindowInsetsAnimationCallback(rvTask,
             new WindowInsetsAnimationCompat.Callback(WindowInsetsAnimationCompat.Callback.DISPATCH_MODE_STOP) {

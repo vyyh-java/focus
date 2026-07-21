@@ -2,5 +2,6 @@
 <resources>
     <style name="numberPicker" parent="Theme.AppCompat.DayNight">
         <item name="colorControlNormal">?attr/colorScreenCorner</item>
+        <item name="android:fontFamily">@font/pixel</item>
     </style>
 </resources>

@@ -15,7 +15,6 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.IN">
         <activity
-            android:screenOrientation="landscape"
             android:name=".ui.main.MainActivity"
             android:exported="true">
             <intent-filter>
