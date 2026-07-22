@@ -11,26 +11,28 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.example.in.R;
+import com.example.in.databinding.ActivityMainBinding;
 
 public class MainActivity extends AppCompatActivity {
     private TaskHelper taskHelper;
     private ClockTimerHelper timerHelper;
-    private AmbientHelper ambientHelper;
-    private View rootView;
+    private ActivityMainBinding binding;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-        rootView = findViewById(android.R.id.content);
-        taskHelper = new TaskHelper(rootView, this, this);
-        timerHelper = new ClockTimerHelper(rootView, this, this);
-
+        this.binding = ActivityMainBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
+        taskHelper = new TaskHelper(this, binding);
+        timerHelper = new ClockTimerHelper(this, binding);
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        this.binding = null;
+        taskHelper.release();
+        timerHelper.release();
     }
     @Override
     public boolean dispatchTouchEvent(MotionEvent event) {

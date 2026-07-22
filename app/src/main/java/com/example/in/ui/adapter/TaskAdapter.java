@@ -15,6 +15,8 @@ import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.RecyclerView;
 import com.example.in.R;
 import com.example.in.data.entity.Task;
+import com.example.in.databinding.TaskItemBinding;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -31,7 +33,6 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder
 
     //informing listener trigger
     public interface OnTaskActionListener{
-
         void onTaskFocus(int position);
         void onTaskDelete(Task task);
         void onTaskChanged(Task task);
@@ -41,15 +42,11 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder
     //declare item
     public static class TaskViewHolder extends RecyclerView.ViewHolder {
 
-        CheckBox cbTask;
-        public EditText etTask;
-        ImageButton btnDelete;
+        public final TaskItemBinding binding;
 
-        public TaskViewHolder(@NonNull View itemView) {
-            super(itemView);
-            cbTask = itemView.findViewById(R.id.CBTask);
-            etTask = itemView.findViewById(R.id.ETTask);
-            btnDelete = itemView.findViewById(R.id.IBtnDelete);
+        public TaskViewHolder(TaskItemBinding binding) {
+            super(binding.getRoot());
+            this.binding = binding;
         }
     }
 
@@ -57,8 +54,8 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder
     @NonNull
     @Override
     public TaskAdapter.TaskViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.task_item, parent, false);
-        return new TaskViewHolder(view);
+        TaskItemBinding binding = TaskItemBinding.inflate(LayoutInflater.from(parent.getContext()), parent, false);
+        return new TaskViewHolder(binding);
     }
 
     //bind data
@@ -68,21 +65,21 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder
         long currentId = currentTask.taskId;
 
         //remove text watcher
-        holder.etTask.removeCallbacks(null);
-        holder.etTask.setOnFocusChangeListener(null);
+        holder.binding.ETTask.removeCallbacks(null);
+        holder.binding.ETTask.setOnFocusChangeListener(null);
 
-        if(holder.etTask.getTag() instanceof TextWatcher){
-            holder.etTask.removeTextChangedListener((TextWatcher) holder.etTask.getTag());
+        if(holder.binding.ETTask.getTag() instanceof TextWatcher){
+            holder.binding.ETTask.removeTextChangedListener((TextWatcher) holder.binding.ETTask.getTag());
         }
 
         //set data
-        holder.cbTask.setChecked(currentTask.isCompleted);
-        holder.etTask.setText(currentTask.taskDetail);
-        holder.btnDelete.setVisibility(View.GONE);
+        holder.binding.CBTask.setChecked(currentTask.isCompleted);
+        holder.binding.ETTask.setText(currentTask.taskDetail);
+        holder.binding.IBtnDelete.setVisibility(View.GONE);
 
         //set ui
         setCheckedUI(currentTask.isCompleted, holder);
-        setFocusedUI(holder.etTask.isFocused(), holder);
+        setFocusedUI(holder.binding.ETTask.isFocused(), holder);
 
         //set text watcher
         TextWatcher textWatcher = new TextWatcher() {
@@ -100,34 +97,34 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder
                 currentTask.taskDetail = editable.toString();
             }
         };
-        holder.etTask.addTextChangedListener(textWatcher);
-        holder.etTask.setTag(textWatcher);
+        holder.binding.ETTask.addTextChangedListener(textWatcher);
+        holder.binding.ETTask.setTag(textWatcher);
 
         //set listener
-        holder.cbTask.setOnClickListener(v -> {
-            boolean isChecked = holder.cbTask.isChecked();
+        holder.binding.CBTask.setOnClickListener(v -> {
+            boolean isChecked = holder.binding.CBTask.isChecked();
             setCheckedUI(isChecked, holder);
             currentTask.isCompleted = isChecked;
             listener.onTaskChanged(currentTask);
         });
 
-        holder.btnDelete.setOnClickListener(v -> {
+        holder.binding.IBtnDelete.setOnClickListener(v -> {
             listener.onTaskDelete(currentTask);
         });
 
 
-        holder.etTask.setOnFocusChangeListener((v, hasFocus) -> {
+        holder.binding.ETTask.setOnFocusChangeListener((v, hasFocus) -> {
             if (hasFocus) {
                 setFocusedUI(true, holder);
                 listener.onTaskFocus(holder.getBindingAdapterPosition());
             }else{
-                String text = holder.etTask.getText().toString();
+                String text = holder.binding.ETTask.getText().toString();
                 if(text.trim().isEmpty()){
                     listener.onTaskDelete(currentTask);
                 }else{
-                    holder.etTask.postDelayed(() -> {
+                    holder.binding.ETTask.postDelayed(() -> {
                         if (holder.getBindingAdapterPosition() != RecyclerView.NO_POSITION && currentId == tasks.get(holder.getBindingAdapterPosition()).taskId) {
-                            if (!holder.etTask.isFocused()) {
+                            if (!holder.binding.ETTask.isFocused()) {
                                 setFocusedUI(false, holder);
                                 listener.onTaskChanged(currentTask);
                             }
@@ -136,7 +133,7 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder
                 }
             }
         });
-        holder.etTask.setOnEditorActionListener((v, actionId, event) -> {
+        holder.binding.ETTask.setOnEditorActionListener((v, actionId, event) -> {
             return listener.onTaskEdit((EditText) v, actionId, event);
         });
     }
@@ -180,16 +177,16 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder
     //setCheckedUi
     public void setCheckedUI(boolean isChecked, TaskViewHolder holder){
         //line
-        holder.etTask.getPaint().setStrikeThruText(isChecked);
+        holder.binding.ETTask.getPaint().setStrikeThruText(isChecked);
         //color
-        holder.etTask.setActivated(!isChecked);
+        holder.binding.ETTask.setActivated(!isChecked);
         //
-        holder.cbTask.setChecked(isChecked);
+        holder.binding.CBTask.setChecked(isChecked);
     }
 
     //setSelectedUi
     public void setFocusedUI(boolean hasFocus, TaskViewHolder holder){
         //btnVisibility
-        holder.btnDelete.setVisibility(hasFocus ? View.VISIBLE : View.GONE);
+        holder.binding.IBtnDelete.setVisibility(hasFocus ? View.VISIBLE : View.GONE);
     }
 }

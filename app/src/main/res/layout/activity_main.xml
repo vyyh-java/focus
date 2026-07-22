@@ -166,7 +166,7 @@
             android:layout_marginHorizontal="12dp"
             android:background="@null"
             android:scaleType="fitXY"
-            android:src="@drawable/selector_button_potrait"
+            android:src="@drawable/selector_button_portrait"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -177,7 +177,7 @@
             android:layout_marginHorizontal="12dp"
             android:background="@null"
             android:scaleType="fitXY"
-            android:src="@drawable/selector_button_potrait"
+            android:src="@drawable/selector_button_portrait"
             app:layout_constraintStart_toEndOf="@+id/IBRain"
             app:layout_constraintTop_toTopOf="@+id/IBRain" />
 
@@ -188,7 +188,7 @@
             android:layout_marginHorizontal="12dp"
             android:background="@null"
             android:scaleType="fitXY"
-            android:src="@drawable/selector_button_potrait"
+            android:src="@drawable/selector_button_portrait"
             app:layout_constraintStart_toEndOf="@+id/IBForest"
             app:layout_constraintTop_toTopOf="@+id/IBForest" />
 

@@ -21,21 +21,22 @@ import androidx.recyclerview.widget.LinearSmoothScroller;
 import androidx.recyclerview.widget.RecyclerView;
 import com.example.in.R;
 import com.example.in.data.entity.Task;
+import com.example.in.databinding.ActivityMainBinding;
 import com.example.in.ui.adapter.TaskAdapter;
 import java.util.List;
 
 public class TaskHelper implements TaskAdapter.OnTaskActionListener {
 
-    private final TextView btnAdd;
     private final TaskViewModel viewModel;
     private final TaskAdapter adapter;
-    private final RecyclerView rvTask;
-    private final RecyclerView.LayoutManager layoutManager;
+    private ActivityMainBinding binding;
     private boolean isAdding = false;
 
-    public <T extends LifecycleOwner & ViewModelStoreOwner> TaskHelper(View rootView, Context context, T owner) {
+    public <T extends LifecycleOwner & ViewModelStoreOwner> TaskHelper(T owner, ActivityMainBinding binding) {
+        this.binding = binding;
         this.viewModel = new ViewModelProvider(owner).get(TaskViewModel.class);
-        this.layoutManager = new LinearLayoutManager(context){
+        this.adapter = new TaskAdapter(this);
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(binding.RVTask.getContext()){
             @Override
             public void smoothScrollToPosition(RecyclerView recyclerView, RecyclerView.State state, int position) {
                 LinearSmoothScroller smoothScroller = new LinearSmoothScroller(recyclerView.getContext()) {
@@ -48,7 +49,6 @@ public class TaskHelper implements TaskAdapter.OnTaskActionListener {
                 startSmoothScroll(smoothScroller);
             }
         };
-        this.adapter = new TaskAdapter(this);
         adapter.registerAdapterDataObserver(new RecyclerView.AdapterDataObserver() {
             @Override
             public void onItemRangeInserted(int positionStart, int itemCount) {
@@ -58,26 +58,24 @@ public class TaskHelper implements TaskAdapter.OnTaskActionListener {
                     //scroll to new position
                     layoutManager.scrollToPosition(positionStart);
                     //get focus
-                    rvTask.post(() -> {
-                        RecyclerView.ViewHolder holder = rvTask.findViewHolderForAdapterPosition(positionStart);
+                    binding.RVTask.post(() -> {
+                        RecyclerView.ViewHolder holder = binding.RVTask.findViewHolderForAdapterPosition(positionStart);
 
                         if (holder instanceof TaskAdapter.TaskViewHolder) {
                             TaskAdapter.TaskViewHolder taskHolder = (TaskAdapter.TaskViewHolder) holder;
-                            taskHolder.etTask.requestFocus();
+                            taskHolder.binding.ETTask.requestFocus();
                             //rise keyboard
-                            InputMethodManager imm = (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
+                            InputMethodManager imm = (InputMethodManager) binding.RVTask.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
                             if(imm != null){
-                                imm.showSoftInput(taskHolder.etTask, InputMethodManager.SHOW_IMPLICIT);
+                                imm.showSoftInput(taskHolder.binding.ETTask, InputMethodManager.SHOW_IMPLICIT);
                             }
                         }
                     });
                 }
             }
         });
-        this.rvTask = (RecyclerView) rootView.findViewById(R.id.RVTask);
-        rvTask.setLayoutManager(layoutManager);
-        rvTask.setAdapter(this.adapter);
-        this.btnAdd = (TextView) rootView.findViewById(R.id.TVAdd);
+        binding.RVTask.setLayoutManager(layoutManager);
+        binding.RVTask.setAdapter(this.adapter);
 
         //observe data change
         viewModel.getAllTasks().observe(owner, tasks -> {
@@ -87,24 +85,24 @@ public class TaskHelper implements TaskAdapter.OnTaskActionListener {
         });
 
         //add
-        btnAdd.setOnClickListener(v -> {
-            if(rvTask.getVisibility() != View.VISIBLE){
+        binding.TVAdd.setOnClickListener(v -> {
+            if(binding.RVTask.getVisibility() != View.VISIBLE){
                 Toast.makeText(v.getContext(), "Please return to To-do list", Toast.LENGTH_SHORT).show();
             }else{
                 this.isAdding = true;
                 viewModel.addTask("");
             }
         });
-        ViewCompat.setWindowInsetsAnimationCallback(rvTask,
+        ViewCompat.setWindowInsetsAnimationCallback(binding.RVTask,
             new WindowInsetsAnimationCompat.Callback(WindowInsetsAnimationCompat.Callback.DISPATCH_MODE_STOP) {
                 @NonNull
                 @Override
                 public WindowInsetsCompat onProgress(@NonNull WindowInsetsCompat insets, @NonNull List<WindowInsetsAnimationCompat> runningAnimations) {
                     int keyboardHeight = insets.getInsets(WindowInsetsCompat.Type.ime()).bottom;
-                    rvTask.setPadding(
-                            rvTask.getPaddingLeft(),
-                            rvTask.getPaddingTop(),
-                            rvTask.getPaddingRight(),
+                    binding.RVTask.setPadding(
+                            binding.RVTask.getPaddingLeft(),
+                            binding.RVTask.getPaddingTop(),
+                            binding.RVTask.getPaddingRight(),
                             keyboardHeight
                     );
                     return insets;
@@ -117,7 +115,7 @@ public class TaskHelper implements TaskAdapter.OnTaskActionListener {
     @Override
     public void onTaskFocus(int position) {
         if(position != RecyclerView.NO_POSITION){
-            rvTask.smoothScrollToPosition(position);
+            binding.RVTask.smoothScrollToPosition(position);
         }
     }
 
@@ -146,5 +144,11 @@ public class TaskHelper implements TaskAdapter.OnTaskActionListener {
             return true;
         }
         return false;
+    }
+
+    public void release(){
+        if(binding != null){
+            binding = null;
+        }
     }
 }
